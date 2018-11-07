@@ -94,5 +94,36 @@ var_table
 #these are close enough to use an ANOVA because largest is <4x greater than smallest
 ```
 
+3. One-way ANOVA
+
+single factor:common_name (species), 
+levels: (there are three types of penguins) 
+random variable: flipper_length (mm)
+
+Is there a significant difference in mean flipper length (mm) for female Chinstrap, Gentoo and Adelie penguins? 
+
+```{r}
+#H0: Mean flipper lengths across all species are equal
+#HA: There is at LEAST one significant difference that exists (at least 2 means differ significantly)
+
+penguin_aov <- aov(flipper_length ~ common_name, data = penguins2)
+summary(penguin_aov)
+
+#If null is true, (taking samples from same populations), there is almost a zero percent change we get means as different as ours by random chance.
+
+#At least two samples were taken from populations with different means.
 
 
+#Which ones are different? Are all three different from eachother? Or something else?
+
+#Post-hoc testing using Tukey's hsd
+
+penguin_ph <- TukeyHSD(penguin_aov)
+penguin_ph
+
+#We can see from p values that all species are different from each other 
+```
+
+"There is a significant different in flipper lengths between these three species"
+or 
+"Mean flipper lengths for Adelie, Gentoo and Chinstrap penguins are all significantly different (F(df) = statistic, p < 0.0001, $\alpha$ = 0.05, with post-hoc Tukey's HSD, $\alpha = 0.05$"
